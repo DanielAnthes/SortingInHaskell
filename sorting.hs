@@ -8,14 +8,14 @@ insertionsort (x:xs) = insertionsort' xs [x]
 
 
 
--- Bubble Sort
+-- Bubble Sort still broken
 
 bubblesort :: (Ord a) => [a] -> [a]
 bubblesort [] = []
-bubblesort xs = bubblesort' [] xs
-    where bubblesort' srtd xs
-             | tail xs == [] = srtd ++ xs
-             | otherwise     = bubblesort' (srtd ++ [head bubbled]) (tail bubbled)
+bubblesort xs = bubblesort' xs []
+    where bubblesort' xs srtd
+             | tail xs == [] = xs ++ srtd
+             | otherwise     = bubblesort' (reverse (tail (reverse xs))) ( [head (reverse bubbled)] ++ srtd )
                  where bubbled  = bubble [] xs
                        bubble xs ys
                          |tail ys == []      = xs ++ ys
@@ -34,6 +34,11 @@ selectionsort xs = selectionsort' [] xs
              | otherwise     = selectionsort' (xs ++ [smallest]) (removeFirst smallest ys)
                  where smallest = minimum ys
 
+
+-- Quick Sort
+quicksort :: (Ord a) => [a] -> [a]
+quicksort []     = []
+quicksort (x:xs) = (quicksort [s | s <- xs, s <= x ]) ++ [x] ++ (quicksort [s | s <- xs, s > x])
 
 
 -- Auxiliary Functions
